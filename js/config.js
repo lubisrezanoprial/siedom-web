@@ -11,10 +11,7 @@
 ============================================ */
 
 const API_CONFIG = {
-  // GANTI URL INI dengan URL deployment Apps Script Anda
   BASE_URL: 'https://script.google.com/macros/s/AKfycbz8gf-E5sCOXZYB9ZofCLQlq-inaUpfGYlPKopj7WzNRUf4-vn_GBnUtqiJb0jHGpFtUQ/exec',
-  
-  // Timeout untuk request (30 detik)
   TIMEOUT: 30000
 };
 
