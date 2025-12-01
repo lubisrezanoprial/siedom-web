@@ -1,1 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pencarian - SIEDOM</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f8f9fa;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      padding: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .topbar-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-section img {
+      width: 45px;
+      height: 45px;
+      background: white;
+      padding: 5px;
+      border-radius: 10px;
+    }
+
+    .logo-text {
+      color: white;
+    }
+
+    .logo-text h1 {
+      font-size: 1.5em;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text p {
+      font-size: 0.75em;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95em;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover, nav a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .main-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #f3f4f6;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .header-title {
+      font-size: 1.75em;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .header-subtitle {
+      color: #6b7280;
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+
+    .header-info {
+      color: #9ca3af;
+      font-size: 0.875em;
+      margin-top: 10px;
+    }
+
+    .header-info a {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .header-info a:hover {
+      text-decoration: underline;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.875em;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: all 0.3s;
+      color: #111827;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    input[type="text"]::placeholder {
+      color: #9ca3af;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      display: none;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 0.95em;
+    }
+
+    #hasilContainer {
+      margin-top: 30px;
+    }
+
+    .info-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px;
+      font-size: 0.95em;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .info-value {
+      color: #111827;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #111827;
+      margin: 30px 0 15px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .matkul-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .matkul-item {
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: 500;
+      border-left: 4px solid;
+      transition: transform 0.2s;
+    }
+
+    .matkul-item:hover {
+      transform: translateX(4px);
+    }
+
+    .matkul-success {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: #22c55e;
+    }
+
+    .matkul-warning {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #f59e0b;
+    }
+
+    .matkul-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #ef4444;
+    }
+
+    .matkul-complete {
+      background: #eff6ff;
+      color: #1e40af;
+      border-color: #3b82f6;
+      text-align: center;
+    }
+
+    .alert {
+      padding: 16px 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .alert-warning {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #fbbf24;
+    }
+
+    #kopPrint {
+      display: none;
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #6366f1;
+    }
+
+    #kopPrint img {
+      width: 60px;
+      margin-bottom: 12px;
+    }
+
+    #kopPrint h2 {
+      color: #111827;
+      font-size: 1.3em;
+      margin-bottom: 5px;
+    }
+
+    #kopPrint p {
+      color: #6b7280;
+      font-size: 0.9em;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      padding: 25px 30px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.875em;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .topbar-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .logo-section {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .container {
+        padding: 30px 15px;
+      }
+
+      .main-card {
+        padding: 25px 20px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .info-label::after {
+        content: ':';
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 20px;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #hasilContainer, #hasilContainer * {
+        visibility: visible;
+      }
+
+      #hasilContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      #kopPrint {
+        display: block !important;
+      }
+
+      .topbar, nav, footer, .input-group, .button-group, .loading, .header {
+        display: none !important;
+      }
+
+      .main-card {
+        box-shadow: none;
+        border: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-content">
+      <div class="logo-section">
+        <img src="https://staiuisu.ac.id/wp-content/uploads/2025/10/logo-stai-uisu.webp" alt="Logo STAI UISU">
+        <div class="logo-text">
+          <h1>SIEDOM</h1>
+          <p>Sistem Informasi Evaluasi Dosen oleh Mahasiswa</p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">📊 Dashboard</a>
+        <a href="pencarian.html" class="active">🔍 Pencarian</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-card">
+      <div class="header">
+        <h2 class="header-title">🔍 Pencarian Status EDOM</h2>
+        <p class="header-subtitle">Cek status pengisian evaluasi dosen Anda</p>
+        <p class="header-info">
+          Lembaga Penjaminan Mutu • 
+          <a href="https://lpm.staiuisu.ac.id" target="_blank">lpm.staiuisu.ac.id</a>
+        </p>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="npm">Nomor Pokok Mahasiswa (NPM)</label>
+        <input type="text" 
+               id="npm" 
+               placeholder="Contoh: 2021010123" 
+               autocomplete="off"
+               autofocus>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="cari()">
+          <span>🔍</span>
+          <span>Cari Data</span>
+        </button>
+        <button id="printBtn" class="btn-secondary" onclick="printHasil()" style="display: none;">
+          <span>🖨️</span>
+          <span>Cetak Hasil</span>
+        </button>
+      </div>
+
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p class="loading-text">Mencari data Anda...</p>
+      </div>
+
+      <div id="hasilContainer">
+        <div id="kopPrint">
+          <img src="https://staiuisu.ac.id/wp-content/uploads/2025/10/logo-stai-uisu.webp" alt="Logo">
+          <h2>Sistem Informasi EDOM</h2>
+          <p>Sekolah Tinggi Agama Islam "UISU" Pematangsiantar</p>
+          <p>Lembaga Penjaminan Mutu</p>
+        </div>
+
+        <div id="hasil"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p style="font-weight: 600; margin-bottom: 5px;">Lembaga Penjaminan Mutu • STAI UISU Pematangsiantar</p>
+    <p><a href="https://lpm.staiuisu.ac.id" target="_blank">lpm.staiuisu.ac.id</a></p>
+    <p style="margin-top: 10px;">© 2025 <a href="https://www.rezalubis.com/" target="_blank">rezalubis.com</a> – Dikembangkan oleh LPM</p>
+  </footer>
+
+  <!-- Load JavaScript files -->
+  <script src="js/config.js"></script>
+  <script src="js/pencarian.js"></script>
+</body>
+</html>
