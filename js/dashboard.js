@@ -1,20 +1,16 @@
 /* ============================================
-   DASHBOARD SIEDOM - MAIN LOGIC (DEBUG)
+   DASHBOARD SIEDOM - MAIN LOGIC
 ============================================ */
 
 // Load data saat halaman dimuat
 document.addEventListener('DOMContentLoaded', async function () {
   console.log('Dashboard: Page loaded, fetching data...');
-  console.log('Dashboard: API_URL =', API_URL);
   
   try {
     // Panggil API untuk mendapatkan data dashboard
     const data = await callAPI('dashboard');
     
-    console.log('Dashboard: Raw API Response:', data);
-    console.log('Dashboard: totalIsi =', data.totalIsi);
-    console.log('Dashboard: totalBelum =', data.totalBelum);
-    console.log('Dashboard: totalRespon =', data.totalRespon);
+    console.log('Dashboard: Data received:', data);
     
     // Render dashboard
     renderDashboard(data);
@@ -34,14 +30,14 @@ function showError(message) {
 
 // Fungsi untuk render dashboard
 function renderDashboard(data) {
-  console.log('Dashboard: Rendering with data:', data);
+  console.log('Dashboard: Rendering...');
   
   // Sembunyikan loading, tampilkan content
   document.getElementById('loading').style.display = 'none';
   document.getElementById('content').style.display = 'block';
 
   // Render statistik cards
-  const statsHTML = `
+  document.getElementById('stats').innerHTML = `
     <div class="stat-card blue">
       <div class="stat-header">
         <div class="stat-label">Sudah Mengisi</div>
@@ -64,9 +60,6 @@ function renderDashboard(data) {
       <div class="stat-value">${data.totalRespon || 0}</div>
     </div>
   `;
-  
-  console.log('Dashboard: Stats HTML:', statsHTML);
-  document.getElementById('stats').innerHTML = statsHTML;
 
   // Render Chart Mata Kuliah
   renderChartMatkul(data.matkul);
@@ -82,8 +75,6 @@ function renderDashboard(data) {
 
 // Render Chart Mata Kuliah (Bar Chart)
 function renderChartMatkul(matkulData) {
-  console.log('Dashboard: Rendering Matkul chart with:', matkulData);
-  
   const ctx = document.getElementById('chartMatkul').getContext('2d');
   
   new Chart(ctx, {
@@ -148,8 +139,6 @@ function renderChartMatkul(matkulData) {
 
 // Render Chart Prodi (Pie Chart)
 function renderChartProdi(prodiData) {
-  console.log('Dashboard: Rendering Prodi chart with:', prodiData);
-  
   const ctx = document.getElementById('chartProdi').getContext('2d');
   
   new Chart(ctx, {
@@ -202,8 +191,6 @@ function renderChartProdi(prodiData) {
 
 // Render Chart Semester (Doughnut Chart)
 function renderChartSemester(semesterData) {
-  console.log('Dashboard: Rendering Semester chart with:', semesterData);
-  
   const ctx = document.getElementById('chartSemester').getContext('2d');
   
   new Chart(ctx, {
